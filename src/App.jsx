@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { SignupFormDemo } from './components/SignupForm'
 
 
 function App() {
@@ -6,9 +7,7 @@ function App() {
 
   return (
     <>
-      <h1>
-        welcome to schedule todos for friends and family
-      </h1>
+      <SignupFormDemo/>
     </>
   )
 }
