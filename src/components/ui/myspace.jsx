@@ -1,3 +1,4 @@
+import Profile from "../Profile";
 import mockData from "./mockdata";
 
 const MySpace = () => {
@@ -23,6 +24,7 @@ const MySpace = () => {
         </div>
       </div>
     </div>
+    // <Profile/>
   );
 };
 
