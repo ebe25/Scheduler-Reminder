@@ -11,7 +11,24 @@ import {BASE_URL} from "../utils/api-config";
 const Home = () => {
   const {users} = useFetchUsers(BASE_URL);
   const {getAccessTokenSilently, isAuthenticated, isLoading, user} = useAuth0();
+  const [socket, setSocket] = useState(null);
 
+  const createUser = async (data) => {
+    try {
+      if (data) {
+        const res = await axios.post(`${BASE_URL}/users`, {
+          name: data.name,
+          email: data.email,
+          picture: data.picture,
+        });
+        console.log("created user in db", res);
+      } else {
+        console.log("No data yet creating user");
+      }
+    } catch (error) {
+      console.error("Error client", error);
+    }
+  };
   useEffect(() => {
     const trySilentAuth = async () => {
       try {
@@ -23,32 +40,15 @@ const Home = () => {
     if (isLoading) {
       trySilentAuth();
     }
-  }, [isLoading]);
-  useEffect(() => {
-    const socket = io("http://localhost:8000");
+
     if (user && isAuthenticated) {
       socket.emit("login", {userId: user?.name});
-      console.log("usersr", JSON.stringify(user, null, 3));
     }
-  }, []);
-
+  }, [isLoading]);
   useEffect(() => {
-    // const createUser = async (data) => {
-    //   try {
-    //     const res = await axios.post(`${BASE_URL}/users`, {
-    //       name: data.name,
-    //       email: data.email,
-    //       picture: data.picture,
-    //     });
-    //     console.log("resp bck", res);
-    //   } catch (error) {
-    //     console.error("Error client", error);
-    //   }
-    // };
-    // if (user) {
-    //   createUser(user);
-    // }
-    // console.log(users);
+    const socketServer = io("http://localhost:8000");
+    setSocket(socketServer);
+    createUser(user);
   }, []);
 
   return (
@@ -77,7 +77,6 @@ const Home = () => {
                   <span className="label-text">{item.label}</span>
                   <input
                     type="checkbox"
-                    
                     className="checkbox checkbox-primary"
                   />
                 </label>
