@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import io from "socket.io-client";
+
 const useFetchUsers = (apiUrl) => {
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(false);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     const fetchUser = async () => {
-      setIsLoading(true);
+      setIsUserLoading(true);
       setError(null);
       try {
         const {data} = await axios.get(`${apiUrl}/users`);
@@ -19,12 +20,12 @@ const useFetchUsers = (apiUrl) => {
       } catch (error) {
         setError(error);
       } finally {
-        setIsLoading(false);
+        setIsUserLoading(false);
       }
     };
     fetchUser();
-  }, [apiUrl]);
-  return {users, isLoading, error};
+  }, []);
+  return {users, isUserLoading, error};
 };
 
 export default useFetchUsers;

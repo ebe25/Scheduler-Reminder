@@ -3,32 +3,15 @@ import activeUsers from "./ui/activeuser";
 import mockData from "./ui/mockdata";
 import MySpace from "./ui/myspace";
 import {useAuth0} from "@auth0/auth0-react";
-import io from "socket.io-client";
 import axios from "axios";
 import useFetchUsers from "../utils/useFetchUsers";
 import {BASE_URL} from "../utils/api-config";
 
-const Home = () => {
-  const {users} = useFetchUsers(BASE_URL);
-  const {getAccessTokenSilently, isAuthenticated, isLoading, user} = useAuth0();
-  const [socket, setSocket] = useState(null);
+const Home = ({socket}) => {
+  const {users, isUserLoading} = useFetchUsers(BASE_URL);
+  const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
+  const [active, setActive] = useState([]);
 
-  const createUser = async (data) => {
-    try {
-      if (data) {
-        const res = await axios.post(`${BASE_URL}/users`, {
-          name: data.name,
-          email: data.email,
-          picture: data.picture,
-        });
-        console.log("created user in db", res);
-      } else {
-        console.log("No data yet creating user");
-      }
-    } catch (error) {
-      console.error("Error client", error);
-    }
-  };
   useEffect(() => {
     const trySilentAuth = async () => {
       try {
@@ -40,17 +23,39 @@ const Home = () => {
     if (isLoading) {
       trySilentAuth();
     }
-
-    if (user && isAuthenticated) {
-      socket.emit("login", {userId: user?.name});
+    // if (!isLoading && user && !isAuthenticated) {
+    //   if (
+    //     !users.some(
+    //       (userFromHook) =>
+    //         userFromHook.email === user.email && userFromHook.name === user.name
+    //     )
+    //   ) {
+    //     // createUser(user);
+    //   }
+    // }
+    if (isAuthenticated && user) {
+      socket.emit("login", {
+        name: user.name,
+        email: user.email,
+        picture: user.picture,
+      });
     }
+    // socket.on("active_users", () => { console.log("active users server") })
   }, [isLoading]);
-  useEffect(() => {
-    const socketServer = io("http://localhost:8000");
-    setSocket(socketServer);
-    createUser(user);
-  }, []);
 
+  useEffect(() => {
+    // console.log("userss home", JSON.stringify(users, null, 3));
+  }, [isUserLoading]);
+  useEffect(() => {
+    // console.dir(user)
+    socket.on("active_users", (activeUsersServer) => {
+      console.log(
+        "socket recivied acitve users event",
+        JSON.stringify(activeUsersServer, null, 4)
+      );
+      setActive(activeUsersServer);
+    });
+  }, []);
   return (
     <>
       <MySpace />
@@ -58,18 +63,23 @@ const Home = () => {
         <div className="hero-content">
           <div className="text-center lg:w-1/2 p-6">
             <h1 className="text-3xl font-bold">Active Users</h1>
-            <ul className="menu bg-base-200 rounded-box space-y-2">
-              {users &&
-                users.length > 0 &&
-                users.map((user) => (
+
+            {isUserLoading ? (
+              <h2 className="text-2xl font bold">Loading...</h2>
+            ) : users.length > 0 ? (
+              <ul className="menu bg-base-200 rounded-box space-y-2">
+                {active.map((user) => (
                   <li key={user.id}>
-                    <a>{user.name}</a>
+                    <p className="text-green-400">{user.name}</p>
                   </li>
                 ))}
-            </ul>
+              </ul>
+            ) : (
+              <p>No active users found.</p>
+            )}
           </div>
 
-          <div className="card w-full max-w-md shadow-2xl bg-base-100">
+          {/* <div className="card w-full max-w-md shadow-2xl bg-base-100">
             <h1 className="text-3xl font-bold text-center">To-Do / Schedule</h1>
             <div className="form-control">
               {mockData.map((item) => (
@@ -82,7 +92,7 @@ const Home = () => {
                 </label>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
