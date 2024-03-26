@@ -10,7 +10,6 @@ import {BASE_URL} from "../utils/api-config";
 const Home = ({socket}) => {
   const {users, isUserLoading} = useFetchUsers(BASE_URL);
   const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
-  const [active, setActive] = useState([]);
 
   useEffect(() => {
     const trySilentAuth = async () => {
@@ -23,16 +22,7 @@ const Home = ({socket}) => {
     if (isLoading) {
       trySilentAuth();
     }
-    // if (!isLoading && user && !isAuthenticated) {
-    //   if (
-    //     !users.some(
-    //       (userFromHook) =>
-    //         userFromHook.email === user.email && userFromHook.name === user.name
-    //     )
-    //   ) {
-    //     // createUser(user);
-    //   }
-    // }
+
     if (isAuthenticated && user) {
       socket.emit("login", {
         name: user.name,
@@ -40,22 +30,15 @@ const Home = ({socket}) => {
         picture: user.picture,
       });
     }
-    // socket.on("active_users", () => { console.log("active users server") })
+    socket.on("active_users", (activeUsersServer) => {
+      console.log("socket recivied acitve users event", activeUsersServer);
+    });
+  
+  
   }, [isLoading]);
 
-  useEffect(() => {
-    // console.log("userss home", JSON.stringify(users, null, 3));
-  }, [isUserLoading]);
-  useEffect(() => {
-    // console.dir(user)
-    socket.on("active_users", (activeUsersServer) => {
-      console.log(
-        "socket recivied acitve users event",
-        JSON.stringify(activeUsersServer, null, 4)
-      );
-      setActive(activeUsersServer);
-    });
-  }, []);
+  useEffect(() => {}, [isUserLoading]);
+  useEffect(() => {}, []);
   return (
     <>
       <MySpace />
@@ -64,7 +47,7 @@ const Home = ({socket}) => {
           <div className="text-center lg:w-1/2 p-6">
             <h1 className="text-3xl font-bold">Active Users</h1>
 
-            {isUserLoading ? (
+            {/*isUserLoading ? (
               <h2 className="text-2xl font bold">Loading...</h2>
             ) : users.length > 0 ? (
               <ul className="menu bg-base-200 rounded-box space-y-2">
@@ -76,7 +59,7 @@ const Home = ({socket}) => {
               </ul>
             ) : (
               <p>No active users found.</p>
-            )}
+            )*/}
           </div>
 
           {/* <div className="card w-full max-w-md shadow-2xl bg-base-100">
