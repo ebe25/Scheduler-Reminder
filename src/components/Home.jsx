@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from "react";
-import activeUsers from "./ui/activeuser";
+import React, { useEffect, useState } from "react";
 import mockData from "./ui/mockdata";
 import MySpace from "./ui/myspace";
-import {useAuth0} from "@auth0/auth0-react";
-import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 import useFetchUsers from "../utils/useFetchUsers";
-import {BASE_URL} from "../utils/api-config";
+import { BASE_URL } from "../utils/api-config";
 
-const Home = ({socket}) => {
-  const {users, isUserLoading} = useFetchUsers(BASE_URL);
-  const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
-
+const Home = ({ socket }) => {
+  // const { users, isUserLoading } = useFetchUsers(BASE_URL);
+  const { getAccessTokenSilently, isLoading, user, isAuthenticated } = useAuth0();
+  const [activeUsers, setActiveUsers] = useState(null);
   useEffect(() => {
     const trySilentAuth = async () => {
       try {
@@ -22,7 +20,6 @@ const Home = ({socket}) => {
     if (isLoading) {
       trySilentAuth();
     }
-
     if (isAuthenticated && user) {
       socket.emit("login", {
         name: user.name,
@@ -30,15 +27,19 @@ const Home = ({socket}) => {
         picture: user.picture,
       });
     }
-    socket.on("active_users", (activeUsersServer) => {
-      console.log("socket recivied acitve users event", activeUsersServer);
-    });
-  
-  
+
   }, [isLoading]);
 
-  useEffect(() => {}, [isUserLoading]);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    socket.on("active_users", (activeUsersServer) => {
+      console.log("socket recivied acitve users event", activeUsersServer);
+      setActiveUsers(activeUsersServer)
+      return () => {
+        setActiveUsers(null)
+      }
+
+    })
+  }, []);
   return (
     <>
       <MySpace />
@@ -47,22 +48,22 @@ const Home = ({socket}) => {
           <div className="text-center lg:w-1/2 p-6">
             <h1 className="text-3xl font-bold">Active Users</h1>
 
-            {/*isUserLoading ? (
+            {isUserLoading ? (
               <h2 className="text-2xl font bold">Loading...</h2>
             ) : users.length > 0 ? (
               <ul className="menu bg-base-200 rounded-box space-y-2">
-                {active.map((user) => (
+                {activeUsers?.map((user) => (
                   <li key={user.id}>
-                    <p className="text-green-400">{user.name}</p>
+                    <p className="text-green-400">{user}</p>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>No active users found.</p>
-            )*/}
+              <p>No active users found.</p>)
+            }
           </div>
 
-          {/* <div className="card w-full max-w-md shadow-2xl bg-base-100">
+          <div className="card w-full max-w-md shadow-2xl bg-base-100">
             <h1 className="text-3xl font-bold text-center">To-Do / Schedule</h1>
             <div className="form-control">
               {mockData.map((item) => (
@@ -75,7 +76,7 @@ const Home = ({socket}) => {
                 </label>
               ))}
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </>
