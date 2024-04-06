@@ -12,7 +12,7 @@ const Header = () => {
     isLoading,
     user,
     getAccessTokenSilently,
-} = useAuth0();
+  } = useAuth0();
   const allUsers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/users`);
@@ -59,17 +59,21 @@ const Header = () => {
           )}
         </div>
 
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end ">
           <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
+            className="btn btn-ghost btn-circle avatar indicator">
+            <div className="w-12 rounded-full  ">
               <img
                 alt="Tailwind CSS Navbar component"
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
               />
             </div>
+
+            {isAuthenticated && (
+              <span className="indicator-item indicator-bottom badge badge-success badge-sm" />
+            )}
           </div>
           <ul
             tabIndex={0}

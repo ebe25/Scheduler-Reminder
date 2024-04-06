@@ -1,3 +1,4 @@
+import CreateSchedule from "../CreateSchedule";
 import Profile from "../Profile";
 import mockData from "./mockdata";
 
@@ -20,7 +21,8 @@ const MySpace = () => {
         <div>
           <h1 className="text-5xl font-bold">My Space</h1>
           <p className="py-6">Welcome to the scheduler app. Use the button below to plan out your day and see what your friends are up to!</p>
-          <button className="btn btn-primary">Create Schedule</button>
+          <button className="btn btn-primary" onClick={()=>document.getElementById('my_modal_2').showModal()}>Create Schedule</button>
+          <CreateSchedule/>
         </div>
       </div>
     </div>

@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import mockData from "./ui/mockdata";
 import MySpace from "./ui/myspace";
 import { useAuth0 } from "@auth0/auth0-react";
-import useFetchUsers from "../utils/useFetchUsers";
-import { BASE_URL } from "../utils/api-config";
 
 const Home = ({ socket }) => {
-  // const { users, isUserLoading } = useFetchUsers(BASE_URL);
   const { getAccessTokenSilently, isLoading, user, isAuthenticated } = useAuth0();
-  const [activeUsers, setActiveUsers] = useState(null);
+  const [activeUsers, setActiveUsers] = useState([]);
   useEffect(() => {
     const trySilentAuth = async () => {
       try {
@@ -27,18 +24,17 @@ const Home = ({ socket }) => {
         picture: user.picture,
       });
     }
-
   }, [isLoading]);
 
   useEffect(() => {
     socket.on("active_users", (activeUsersServer) => {
-      console.log("socket recivied acitve users event", activeUsersServer);
+      console.log("socket recivied active users event", activeUsersServer);
       setActiveUsers(activeUsersServer)
-      return () => {
-        setActiveUsers(null)
-      }
-
     })
+    return () => {
+      setActiveUsers(null)
+    }
+    
   }, []);
   return (
     <>
@@ -46,21 +42,16 @@ const Home = ({ socket }) => {
       <div className="min-h-screen">
         <div className="hero-content">
           <div className="text-center lg:w-1/2 p-6">
-            <h1 className="text-3xl font-bold">Active Users</h1>
-
-            {isUserLoading ? (
-              <h2 className="text-2xl font bold">Loading...</h2>
-            ) : users.length > 0 ? (
-              <ul className="menu bg-base-200 rounded-box space-y-2">
-                {activeUsers?.map((user) => (
-                  <li key={user.id}>
-                    <p className="text-green-400">{user}</p>
-                  </li>
-                ))}
+            <h1 className="text-3xl font-bold">Active Friends</h1>
+            {activeUsers && activeUsers.length >0 ? (activeUsers.map((user) => (
+              <ul className="menu bg-base-200 rounded-box space-y-2 w-3/4">
+                <li key={user.id} >
+                 
+                  <span className="text-green-400 flex justify-between">{user.name} <img className="h-8 w-8 rounded-full ring-2 ring-white" src={user.picture}  alt={user.name} /></span>
+                </li>
               </ul>
-            ) : (
-              <p>No active users found.</p>)
-            }
+            ))) : (<p>No active friends found</p>)}
+
           </div>
 
           <div className="card w-full max-w-md shadow-2xl bg-base-100">

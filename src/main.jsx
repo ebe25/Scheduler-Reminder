@@ -16,7 +16,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           "read:current_user update:current_user_metadata response_mode=web_message offline_access openid profile email ",
       }}
       cacheLocation="localstorage"
-      useRefreshTokens={true}>
+      useRefreshTokens={true}
+      >
       <App />
     </Auth0Provider>
   </React.StrictMode>
