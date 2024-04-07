@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import mockData from "./ui/mockdata";
 import MySpace from "./ui/myspace";
 import { useAuth0 } from "@auth0/auth0-react";
+import "react-toastify/dist/ReactToastify.css";
 
 const Home = ({ socket }) => {
   const { getAccessTokenSilently, isLoading, user, isAuthenticated } = useAuth0();
@@ -22,6 +24,17 @@ const Home = ({ socket }) => {
         name: user.name,
         email: user.email,
         picture: user.picture,
+      });
+
+      // Displaying a toast message when a user logs in
+      toast(`${user.name} has joined the party`, {
+        position: "top-right",
+        autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
       });
     }
   }, [isLoading]);
