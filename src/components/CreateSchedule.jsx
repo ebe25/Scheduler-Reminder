@@ -1,13 +1,16 @@
-import {useState, useRef} from "react";
+import {useState, useRef, useEffect} from "react";
 import {IconPlus, IconTrash, IconPencil} from "@tabler/icons-react";
-import useSWR from "swr";
-import {createSchedule} from "../utils/helper";
-// import {fetcher} from "../utils/helper";
+
+import {createSchedule, currentUserData} from "../utils/helper";
+import {useAuth0} from "@auth0/auth0-react";
 
 const CreateSchedule = () => {
   const [todos, setTodos] = useState([]);
   const todoRef = useRef(null);
   const [submittingTodos, setSubmittingTodos] = useState(false);
+  const {user, isLoading} = useAuth0();
+
+
 
   //   const {data, error, isLoading} = useSWR(
   //     "http://localhost:8000/api/v1/todos",
@@ -68,7 +71,8 @@ const CreateSchedule = () => {
   const handleSubmitTodo = async () => {
     setSubmittingTodos(true);
     const data = {
-      label: todos,
+      todos: todos,
+      email: user.email,
     };
     console.log("----", data);
     if (todos && todos.length > 0) {
@@ -166,7 +170,7 @@ const CreateSchedule = () => {
             })}
           <button
             className={`btn mt-2 ${
-              submittingTodos ? `btn-accent` : `btn-default`
+              submittingTodos ? `btn-default` : `btn-accent`
             }  text-lg rounded-full ${
               submittingTodos ? `cursor-not-allowed` : `cursor-pointer`
             }`}
