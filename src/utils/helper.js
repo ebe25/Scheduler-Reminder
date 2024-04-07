@@ -22,3 +22,22 @@ export async function createSchedule(data) {
     throw new Error("Error while clinet posting todos");
   }
 }
+export async function currentUserData() {
+  try {
+    const response = await fetch("http://localhost:8000/api/v1/users");
+    return response;
+  } catch (error) {
+    console.log("Error while getting users ", error);
+    throw new Error("Error while getting users ");
+  }
+}
+
+export const capsInitials = (item) => {
+  //item is a string
+  //item -> "hey there bro supp"
+  return item
+    .split(" ")
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(" ");
+  //return -> "Hey There Bro Supp"
+};
