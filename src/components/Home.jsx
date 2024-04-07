@@ -40,7 +40,7 @@ const Home = ({ socket }) => {
     <>
       <MySpace />
       <div className="min-h-screen">
-        <div className="hero-content">
+        <div className="hero-content ">
           <div className="text-center lg:w-1/2 p-6">
             <h1 className="text-3xl font-bold">Active Friends</h1>
             {activeUsers && activeUsers.length >0 ? (activeUsers.map((user) => (
@@ -54,7 +54,7 @@ const Home = ({ socket }) => {
 
           </div>
 
-          <div className="card w-full max-w-md shadow-2xl bg-base-100">
+          {/* <div className="card w-full max-w-md shadow-2xl bg-base-100">
             <h1 className="text-3xl font-bold text-center">To-Do / Schedule</h1>
             <div className="form-control">
               {mockData.map((item) => (
@@ -67,7 +67,7 @@ const Home = ({ socket }) => {
                 </label>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

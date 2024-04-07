@@ -13,9 +13,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home socket={socket} />} />
-        {/* <Route path="/auth" element={<Authentication />} /> */}
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </Router>
   );
 }

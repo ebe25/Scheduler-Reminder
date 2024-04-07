@@ -13,7 +13,7 @@ const MySpace = () => {
             {mockData.map((item) => (
               <label key={item.id} className="label cursor-pointer">
                 <span className="label-text">{item.label}</span>
-                <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+                <input type="checkbox" className="checkbox checkbox-primary" />
               </label>
             ))}
           </div>
