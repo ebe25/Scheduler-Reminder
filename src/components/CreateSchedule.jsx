@@ -3,14 +3,15 @@ import {IconPlus, IconTrash, IconPencil} from "@tabler/icons-react";
 
 import {createSchedule, currentUserData} from "../utils/helper";
 import {useAuth0} from "@auth0/auth0-react";
+import EmptyList from "./ui/EmptyList";
+import {mutate} from "swr";
+import {BASE_URL} from "@/utils/api-config";
 
 const CreateSchedule = () => {
   const [todos, setTodos] = useState([]);
   const todoRef = useRef(null);
   const [submittingTodos, setSubmittingTodos] = useState(false);
   const {user, isLoading} = useAuth0();
-
-
 
   //   const {data, error, isLoading} = useSWR(
   //     "http://localhost:8000/api/v1/todos",
@@ -74,13 +75,13 @@ const CreateSchedule = () => {
       todos: todos,
       email: user.email,
     };
-    console.log("----", data);
     if (todos && todos.length > 0) {
       const response = await createSchedule(data);
       setTodos([]);
       if (response.ok) {
         setSubmittingTodos(false);
         document.getElementById("my_modal_2").close();
+        mutate(`${BASE_URL}/users`);
       }
     }
   };
@@ -108,11 +109,7 @@ const CreateSchedule = () => {
               {submittingTodos ? (
                 <span className="loading loading-spinner"></span>
               ) : (
-                <img
-                  src={"images/empty_list2.png"}
-                  alt="Empty todo list"
-                  className="rounded-lg "
-                />
+                <EmptyList />
               )}
             </div>
           )}
