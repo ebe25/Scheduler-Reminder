@@ -5,10 +5,6 @@ import MySpace from "./ui/myspace";
 import {useAuth0} from "@auth0/auth0-react";
 import "react-toastify/dist/ReactToastify.css";
 
-
-
-
-
 const Home = ({socket}) => {
   const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
   const [activeUsers, setActiveUsers] = useState([]);
