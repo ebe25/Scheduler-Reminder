@@ -5,13 +5,13 @@ import {fetcher, capsInitials} from "../../utils/helper";
 import MySpaceTodosSectionSkeleton from "../skeletons/MySpaceSkeletons";
 import {useAuth0} from "@auth0/auth0-react";
 import EmptyList from "./EmptyList";
+import LoginPromptModal from "./Modal";
 
 const MySpace = () => {
   const {data, error, isLoading} = useSWR(`${BASE_URL}/users`, fetcher);
   const {user, isAuthenticated} = useAuth0();
 
   if (error) return <div>failed to load</div>;
-
 
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -59,14 +59,19 @@ const MySpace = () => {
             day and see what your friends are up to!
           </p>
           <button
-            className="btn btn-primary"
+            className={`btn ${user ? "btn-primary" : "btn-default"} ${
+              user ? "cursor-pointer" : "cursor-not-allowed"
+            }`}
+            // disabled={user ? false : true}
             onClick={() => {
-              document.getElementById("my_modal_2").showModal();
-              
+              document
+                .getElementById(user ? "my_modal_2" : "my_modal_1")
+                .showModal();
             }}>
             Create Schedule
           </button>
           <CreateSchedule />
+          <LoginPromptModal />
         </div>
       </div>
     </div>
