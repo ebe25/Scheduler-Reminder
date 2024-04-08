@@ -11,10 +11,10 @@ const useFetchUsers = (apiUrl) => {
       setIsUserLoading(true);
       setError(null);
       try {
-        const {data} = await axios.get(`${apiUrl}/users`);
-        const fetchedUsers = data;
-        setUsers(fetchedUsers.data);
-        if (!response.ok) {
+        const response = await axios.get(`${apiUrl}/users`);
+        // const fetchedUsers = data;
+        setUsers(response.data.data);
+        if (!response.status===500) {
           throw new Error(`API request failed with status ${response.status}`);
         }
       } catch (error) {

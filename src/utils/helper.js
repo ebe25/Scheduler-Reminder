@@ -1,3 +1,4 @@
+import axios from "axios"
 export async function fetcher(url) {
   try {
     const res = await fetch(url);
@@ -31,8 +32,21 @@ export async function currentUserData() {
     throw new Error("Error while getting users ");
   }
 }
+export async function UserData() {
+  try {
+    const response = await axios.get("http://localhost:8000/api/v1/users");
+    if(response.status!==200){
+      throw new Error(`Request failed with ${response.status}`)
+    }
+    return response.data;
+  } catch (error) {
+    console.log("Error while getting users ", error);
+    throw new Error("Error while getting users ");
+  }
+}
 
 export const capsInitials = (item) => {
+  console.log("-----",item)
   //item is a string
   //item -> "hey there bro supp"
   return item

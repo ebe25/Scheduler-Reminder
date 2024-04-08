@@ -3,10 +3,16 @@ import useSWR from "swr";
 import {BASE_URL} from "../../utils/api-config";
 import {fetcher, capsInitials} from "../../utils/helper";
 import MySpaceTodosSectionSkeleton from "../skeletons/MySpaceSkeletons";
+import {useAuth0} from "@auth0/auth0-react";
+import EmptyList from "./EmptyList";
 
 const MySpace = () => {
   const {data, error, isLoading} = useSWR(`${BASE_URL}/users`, fetcher);
+  const {user, isAuthenticated} = useAuth0();
+
   if (error) return <div>failed to load</div>;
+
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -16,16 +22,33 @@ const MySpace = () => {
           <div className="form-control p-2 m-2">
             {!data ? (
               <MySpaceTodosSectionSkeleton />
+            ) : !user ? (
+              <MySpaceTodosSectionSkeleton />
             ) : (
-              data.data[0].todos.map((item, index) => (
-                <label key={index} className="label cursor-pointer">
-                  <span className="label-text text-3xl">{capsInitials(item)}</span>
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-primary"
-                  />
-                </label>
-              ))
+              data.data &&
+              data.data
+                .filter((dbUser) => {
+                  if (dbUser.name === user.name) {
+                    return dbUser;
+                  }
+                })
+                .map((dbUser, index) => {
+                  return dbUser.todos.length === 0 ? (
+                    <EmptyList key={index} />
+                  ) : (
+                    dbUser.todos.map((todo, index) => (
+                      <label className="label cursor-pointer" key={index}>
+                        <span className="label-text text-3xl">
+                          {capsInitials(todo)}
+                        </span>
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-primary"
+                        />
+                      </label>
+                    ))
+                  );
+                })
             )}
           </div>
         </div>
@@ -37,7 +60,10 @@ const MySpace = () => {
           </p>
           <button
             className="btn btn-primary"
-            onClick={() => document.getElementById("my_modal_2").showModal()}>
+            onClick={() => {
+              document.getElementById("my_modal_2").showModal();
+              
+            }}>
             Create Schedule
           </button>
           <CreateSchedule />
