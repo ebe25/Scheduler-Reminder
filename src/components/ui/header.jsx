@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import Button from "./button";
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
+import {socket} from "@/socket";
 export const BASE_URL = "http://localhost:8000/api/v1/";
 
 const Header = () => {
@@ -13,6 +14,7 @@ const Header = () => {
     user,
     getAccessTokenSilently,
   } = useAuth0();
+
   const allUsers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/users`);
@@ -44,6 +46,7 @@ const Header = () => {
             <button
               className="btn"
               onClick={() => {
+                socket.emit("logout_triggered", user);
                 logout({logoutParams: {returnTo: window.location.origin}});
               }}>
               Logout
