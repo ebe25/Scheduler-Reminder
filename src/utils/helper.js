@@ -1,4 +1,5 @@
-import axios from "axios"
+import axios from "axios";
+import { BASE_URL } from "./api-config";
 export async function fetcher(url) {
   try {
     const res = await fetch(url);
@@ -10,7 +11,7 @@ export async function fetcher(url) {
 
 export async function createSchedule(data) {
   try {
-    const response = await fetch("http://localhost:8000/api/v1/todos", {
+    const response = await fetch(`${BASE_URL}/todos`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -25,7 +26,7 @@ export async function createSchedule(data) {
 }
 export async function currentUserData() {
   try {
-    const response = await fetch("http://localhost:8000/api/v1/users");
+    const response = await fetch(`${BASE_URL}/users`);
     return response;
   } catch (error) {
     console.log("Error while getting users ", error);
@@ -34,9 +35,9 @@ export async function currentUserData() {
 }
 export async function UserData() {
   try {
-    const response = await axios.get("http://localhost:8000/api/v1/users");
-    if(response.status!==200){
-      throw new Error(`Request failed with ${response.status}`)
+    const response = await axios.get(`${BASE_URL}/users`);
+    if (response.status !== 200) {
+      throw new Error(`Request failed with ${response.status}`);
     }
     return response.data;
   } catch (error) {
@@ -46,7 +47,6 @@ export async function UserData() {
 }
 
 export const capsInitials = (item) => {
-  console.log("-----",item)
   //item is a string
   //item -> "hey there bro supp"
   return item
@@ -55,5 +55,3 @@ export const capsInitials = (item) => {
     .join(" ");
   //return -> "Hey There Bro Supp"
 };
-
-

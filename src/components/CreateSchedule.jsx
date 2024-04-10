@@ -13,10 +13,6 @@ const CreateSchedule = () => {
   const [submittingTodos, setSubmittingTodos] = useState(false);
   const {user, isLoading} = useAuth0();
 
-  //   const {data, error, isLoading} = useSWR(
-  //     "http://localhost:8000/api/v1/todos",
-  //     fetcher
-  //   );
 
   const [editingTodo, setEditingTodo] = useState({
     id: null, // Store the todo index for editing
