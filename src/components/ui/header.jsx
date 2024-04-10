@@ -3,7 +3,6 @@ import Button from "./button";
 import {useAuth0} from "@auth0/auth0-react";
 import axios from "axios";
 import {socket} from "@/socket";
-export const BASE_URL = "http://localhost:8000/api/v1/";
 
 const Header = () => {
   const {
