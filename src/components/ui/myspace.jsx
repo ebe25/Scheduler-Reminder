@@ -6,13 +6,39 @@ import MySpaceTodosSectionSkeleton from "../skeletons/MySpaceSkeletons";
 import {useAuth0} from "@auth0/auth0-react";
 import EmptyList from "./EmptyList";
 import LoginPromptModal from "./Modal";
+import {socket} from "@/socket";
+import {useEffect, useState} from "react";
+import {ToastContainer, toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MySpace = () => {
   const {data, error, isLoading} = useSWR(`${BASE_URL}/users`, fetcher);
   const {user, isAuthenticated} = useAuth0();
+  const [taskCompleted, setTaskCompleted] = useState(false);
+  // const [checkedTasks, setCheckedTasks] = useState([]);
+
+  useEffect(() => {
+    socket.on("notify", ({label, user}) => {
+      toast(`${user.name} completed ${label}`, {
+        position: "top-left",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+      // setTaskCompleted(true);
+    });
+    return () => {};
+  }, []);
 
   if (error) return <div>failed to load</div>;
 
+  const handleTaskCompletion = (idx) => {
+    socket.emit("task_completed", {user: user, todoIdx: idx});
+   
+  };
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -42,8 +68,11 @@ const MySpace = () => {
                           {capsInitials(todo)}
                         </span>
                         <input
+                          key={index}
                           type="checkbox"
+                          
                           className="checkbox checkbox-primary"
+                          onChange={() => handleTaskCompletion(index)}
                         />
                       </label>
                     ))

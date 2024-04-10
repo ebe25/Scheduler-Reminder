@@ -9,6 +9,7 @@ const Home = ({socket}) => {
   const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
   const [activeUsers, setActiveUsers] = useState([]);
 
+
   useEffect(() => {
     const trySilentAuth = async () => {
       try {
@@ -53,7 +54,7 @@ const Home = ({socket}) => {
       // Displaying a toast message when a user logs in
       toast(`${user.name} has joined the party`, {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
@@ -61,7 +62,8 @@ const Home = ({socket}) => {
         progress: undefined,
       });
     }
-  }, [user]);
+  }, [isLoading]);
+
 
   return (
     <>
