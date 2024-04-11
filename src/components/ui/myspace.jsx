@@ -15,7 +15,6 @@ const MySpace = () => {
   const {data, error, isLoading} = useSWR(`${BASE_URL}/users`, fetcher);
   const {user, isAuthenticated} = useAuth0();
   const [taskCompleted, setTaskCompleted] = useState(false);
-  // const [checkedTasks, setCheckedTasks] = useState([]);
 
   useEffect(() => {
     socket.on("notify", ({label, user}) => {
@@ -37,7 +36,6 @@ const MySpace = () => {
 
   const handleTaskCompletion = (idx) => {
     socket.emit("task_completed", {user: user, todoIdx: idx});
-   
   };
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -70,7 +68,9 @@ const MySpace = () => {
                         <input
                           key={index}
                           type="checkbox"
-                          
+                          // checked={socket.on("notify", ({label, user}) => {
+                          //   return label === todo ? true : false;
+                          // })}
                           className="checkbox checkbox-primary"
                           onChange={() => handleTaskCompletion(index)}
                         />

@@ -33,7 +33,7 @@ const Header = () => {
 
   return (
     <div className="navbar bg-base-100">
-      <Button />
+  {/*<Button />*/}
 
       <div className="flex flex-grow justify-center">
         <a className="btn text-xl">SCHEDULER APP</a>

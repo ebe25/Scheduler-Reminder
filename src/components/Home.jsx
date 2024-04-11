@@ -8,7 +8,7 @@ import ActiveUsersTab from "./ui/TabList";
 const Home = ({socket}) => {
   const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
   const [activeUsers, setActiveUsers] = useState([]);
-
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const trySilentAuth = async () => {
@@ -64,9 +64,8 @@ const Home = ({socket}) => {
     }
   }, [isLoading]);
 
-
   return (
-    <>
+    <div >
       <MySpace />
       <div className="min-h-screen">
         <div className="hero-content flex justify-center items-center ">
@@ -82,7 +81,7 @@ const Home = ({socket}) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
