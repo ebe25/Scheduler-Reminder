@@ -10,15 +10,15 @@ import {socket} from "@/socket";
 import {useEffect, useState} from "react";
 import {ToastContainer, toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import {mutate} from "swr";
 const MySpace = () => {
   const {data, error, isLoading} = useSWR(`${BASE_URL}/users`, fetcher);
   const {user, isAuthenticated} = useAuth0();
-  const [taskCompleted, setTaskCompleted] = useState(false);
 
   useEffect(() => {
-    socket.on("notify", ({label, user}) => {
-      toast(`${user.name} completed ${label}`, {
+    socket.on("notify", ({label, username}) => {
+      console.log("------", label, username);
+      toast(`${username} completed ${label}`, {
         position: "top-left",
         autoClose: 1000,
         hideProgressBar: false,
@@ -27,20 +27,27 @@ const MySpace = () => {
         draggable: true,
         progress: undefined,
       });
-      // setTaskCompleted(true);
+      mutate(`${BASE_URL}/users`);
     });
     return () => {};
   }, []);
 
   if (error) return <div>failed to load</div>;
 
-  const handleTaskCompletion = (idx) => {
-    socket.emit("task_completed", {user: user, todoIdx: idx});
+  const handleTaskCompletion = (idx, e) => {
+    if (e.target.checked) {
+      socket.emit("task_completed", {
+        user: user,
+        index: idx,
+        todo: e.target.value,
+      });
+      // console.log("vall checked", e.target.value);
+    }
   };
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
-        <div className="card w-full max-w-lg shadow-2xl bg-base-100">
+        <div className="card w-3/6 shadow-2xl bg-base-100">
           <h1 className="text-3xl font-bold text-center">To-Do / Schedule</h1>
           {/* checkboxes */}
           <div className="form-control p-2 m-2">
@@ -57,23 +64,27 @@ const MySpace = () => {
                   }
                 })
                 .map((dbUser, index) => {
-                  return dbUser.todos.length === 0 ? (
+                  return dbUser.todos?.length === 0 ? (
                     <EmptyList key={index} />
                   ) : (
-                    dbUser.todos.map((todo, index) => (
-                      <label className="label cursor-pointer" key={index}>
-                        <span className="label-text text-3xl">
-                          {capsInitials(todo)}
-                        </span>
-                        <input
-                          key={index}
-                          type="checkbox"
-                          // checked={socket.on("notify", ({label, user}) => {
-                          //   return label === todo ? true : false;
-                          // })}
-                          className="checkbox checkbox-primary"
-                          onChange={() => handleTaskCompletion(index)}
-                        />
+                    dbUser.todos?.map((todo, index) => (
+                      <label className="label cursor-pointer " key={index}>
+                        <div className="flex items-center gap-8 flex-grow">
+                          <input
+                            key={index}
+                            type="checkbox"
+                            // checked={socket.on("notify", ({label, user}) => {
+                            //   return label === todo ? true : false;
+                            // })}
+
+                            className="checkbox checkbox-accent"
+                            onChange={(e) => handleTaskCompletion(index, e)}
+                            value={todo.title}
+                          />
+                          <span className="label-text text-3xl ">
+                            {capsInitials(todo.title)}
+                          </span>
+                        </div>
                       </label>
                     ))
                   );
