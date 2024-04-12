@@ -61,7 +61,6 @@ const ActiveUsersTab = ({ activeUsersData }) => {
                   <span className="label-text text-xl  ">
                     {capsInitials(todo.title)}
                   </span>
-                  {console.log("totoot", todo)}
                   <input type="checkbox" disabled={true} checked={todo.status === "COMPLETED" ? true : false} className="checkbox checkbox-info" />
                 </label>
                 <div className="divider lg:divider-horizontal"></div>
