@@ -73,10 +73,7 @@ const MySpace = () => {
                           <input
                             key={index}
                             type="checkbox"
-                            // checked={socket.on("notify", ({label, user}) => {
-                            //   return label === todo ? true : false;
-                            // })}
-
+                            checked={todo.status === "COMPLETED" ? true : false}
                             className="checkbox checkbox-accent"
                             onChange={(e) => handleTaskCompletion(index, e)}
                             value={todo.title}
