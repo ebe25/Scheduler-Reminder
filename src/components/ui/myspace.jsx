@@ -15,6 +15,8 @@ import Error from "./Error";
 const MySpace = () => {
   const {data, error, isLoading} = useSWR(`${BASE_URL}/users`, fetcher);
   const {user, isAuthenticated} = useAuth0();
+
+  const [checked, setChecked] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ const MySpace = () => {
     return () => {};
   }, []);
 
-  if (error) return <Error/>;
+  if (error) return <Error />;
 
   const handleTaskCompletion = (idx, e) => {
     if (e.target.checked) {
@@ -42,6 +44,7 @@ const MySpace = () => {
         index: idx,
         todo: e.target.value,
       });
+      // mutate(`${BASE_URL}/users`);
     }
   };
   return (
@@ -55,6 +58,7 @@ const MySpace = () => {
               {!data ? (
                 <MySpaceTodosSectionSkeleton />
               ) : !user ? (
+                //add a gif component that shows user to add todos
                 <MySpaceTodosSectionSkeleton />
               ) : (
                 data.data &&
@@ -65,31 +69,36 @@ const MySpace = () => {
                     }
                   })
                   .map((dbUser, index) => {
-                    return dbUser.todos?.length === 0 ? (
+                    return dbUser.todos?.length === 0  ? (
                       <EmptyList key={index} />
                     ) : (
                       dbUser.todos?.map((todo, index) => (
-                        <label className="label cursor-pointer " key={index}>
-                          <div className="flex items-center gap-8 flex-grow">
+                        <label
+                          className={`label cursor-pointer ${
+                            todo.status === "COMPLETED" ? "hidden" : "visible"
+                          }`}
+                          key={index}>
+                          <div className={"flex items-center gap-8 flex-grow"}>
                             <input
-                              key={index}
+                              
                               type="checkbox"
                               checked={
                                 todo.status === "COMPLETED" ? true : false
                               }
-                              className="checkbox checkbox-accent"
+                              className={`checkbox checkbox-accent `}
                               onChange={(e) => {
                                 handleTaskCompletion(index, e);
                                 audioRef.current.play();
                               }}
                               value={todo.title}
                             />
-                         
+
                             <span className="label-text text-3xl ">
                               {capsInitials(todo.title)}
                             </span>
                           </div>
                         </label>
+                        
                       ))
                     );
                   })

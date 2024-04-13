@@ -4,6 +4,7 @@ import MySpace from "./ui/myspace";
 import {useAuth0} from "@auth0/auth0-react";
 import "react-toastify/dist/ReactToastify.css";
 import ActiveUsersTab from "./ui/TabList";
+import NoActiveUsersFound from "./ui/NoActiveUsersFound";
 
 const Home = ({socket}) => {
   const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
@@ -54,7 +55,7 @@ const Home = ({socket}) => {
       // Displaying a toast message when a user logs in
       toast(`${user.name} has joined the party`, {
         position: "top-right",
-        autoClose: 500,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
@@ -65,18 +66,21 @@ const Home = ({socket}) => {
   }, [isLoading]);
 
   return (
-    <div >
+    <div>
       <MySpace />
       <div className="min-h-screen">
         <div className="hero-content flex justify-center items-center ">
           <div className="text-center lg:w-1/2 p-6">
-            <h1 className="text-3xl font-bold">Active Users</h1>
             {activeUsers && activeUsers.length > 0 ? (
               <div className="mt-6">
+                <h1 className="text-3xl font-bold">Active Users</h1>
                 <ActiveUsersTab activeUsersData={activeUsers} />
               </div>
             ) : (
-              <p>No active friends found</p>
+              <>
+                <h1 className="text-3xl font-bold">Active Users</h1>
+                <NoActiveUsersFound />
+              </>
             )}
           </div>
         </div>

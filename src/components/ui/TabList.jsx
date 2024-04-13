@@ -6,11 +6,14 @@ import useSWR from "swr";
 import { BASE_URL } from "../../utils/api-config";
 import MySpaceTodosSectionSkeleton from "../skeletons/MySpaceSkeletons";
 import { Card } from "./card";
+import { useAuth0 } from "@auth0/auth0-react";
+import NoActiveUsersFound from "./NoActiveUsersFound";
 
 
 const ActiveUsersTab = ({ activeUsersData }) => {
   const [tabName, setTabName] = useState(activeUsersData[0]?.name);
   const { data, error, isLoading } = useSWR(`${BASE_URL}/users`, fetcher);
+  const { user } = useAuth0();
 
   if (isLoading) {
     return <MySpaceTodosSectionSkeleton />;
@@ -18,16 +21,17 @@ const ActiveUsersTab = ({ activeUsersData }) => {
 
   //selectedUserTodos - >using tabname
   const usersDataByPoll = data?.data;
+  const activeUsersExcepttheCurrentUser = activeUsersData?.filter((dbuser) => dbuser.name !== user.name)
   const selectedUser = usersDataByPoll?.find((user) => user.name === tabName);
   const selectedUserTodos = selectedUser?.todos;
 
   return (
     <Tabs
-      defaultValue={activeUsersData[0]?.name}
+      defaultValue={activeUsersExcepttheCurrentUser[0]?.name}
       className="w-full flex  gap-6 h-3/4 ">
       <Card className={"shadow-xl bg-slate-300 dark:bg-base-400 rounded-lg h-3/4"}>
         <TabsList className="flex-col h-full flex-grow">
-          {activeUsersData.map((user) => {
+          {activeUsersExcepttheCurrentUser.length > 0 ? (activeUsersExcepttheCurrentUser?.map((user) => {
             return (
               <TabsTrigger value={user?.name} key={user.id}>
                 <ul
@@ -46,7 +50,7 @@ const ActiveUsersTab = ({ activeUsersData }) => {
                 </ul>
               </TabsTrigger>
             );
-          })}
+          })) : (<NoActiveUsersFound />)}
         </TabsList>
       </Card>
 
