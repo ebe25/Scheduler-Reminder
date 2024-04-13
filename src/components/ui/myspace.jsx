@@ -64,7 +64,7 @@ const MySpace = () => {
                 data.data &&
                 data.data
                   .filter((dbUser) => {
-                    if (dbUser.name === user.name) {
+                    if (dbUser?.name === user.name) {
                       return dbUser;
                     }
                   })
