@@ -62,9 +62,9 @@ const MySpace = () => {
                 <MySpaceTodosSectionSkeleton />
               ) : (
                 data.data &&
-                data.data
+                data?.data
                   .filter((dbUser) => {
-                    if (dbUser?.name === user.name) {
+                    if (dbUser?.name === user?.name) {
                       return dbUser;
                     }
                   })
@@ -72,7 +72,7 @@ const MySpace = () => {
                     return dbUser.todos?.length === 0  ? (
                       <EmptyList key={index} />
                     ) : (
-                      dbUser.todos?.map((todo, index) => (
+                      dbUser?.todos?.map((todo, index) => (
                         <label
                           className={`label cursor-pointer ${
                             todo.status === "COMPLETED" ? "hidden" : "visible"

@@ -21,7 +21,7 @@ const ActiveUsersTab = ({ activeUsersData }) => {
 
   //selectedUserTodos - >using tabname
   const usersDataByPoll = data?.data;
-  const activeUsersExcepttheCurrentUser = activeUsersData?.filter((dbuser) => dbuser.name !== user.name)
+  const activeUsersExcepttheCurrentUser = activeUsersData?.filter((dbuser) => dbuser?.name !== user?.name)
   const selectedUser = usersDataByPoll?.find((user) => user.name === tabName);
   const selectedUserTodos = selectedUser?.todos;
 
@@ -63,7 +63,7 @@ const ActiveUsersTab = ({ activeUsersData }) => {
                 key={index}>
                 <label className="label cursor-pointer ">
                   <span className="label-text text-xl  ">
-                    {capsInitials(todo.title)}
+                    {capsInitials(todo?.title)}
                   </span>
                   <input type="checkbox" disabled={true} checked={todo.status === "COMPLETED" ? true : false} className="checkbox checkbox-info" />
                 </label>
