@@ -1,26 +1,26 @@
 import CreateSchedule from "../CreateSchedule";
 import useSWR from "swr";
-import {BASE_URL} from "../../utils/api-config";
-import {fetcher, capsInitials} from "../../utils/helper";
+import { BASE_URL } from "../../utils/api-config";
+import { fetcher, capsInitials } from "../../utils/helper";
 import MySpaceTodosSectionSkeleton from "../skeletons/MySpaceSkeletons";
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import EmptyList from "./EmptyList";
 import LoginPromptModal from "./Modal";
-import {socket} from "@/socket";
-import {useEffect, useRef, useState} from "react";
-import {ToastContainer, toast} from "react-toastify";
+import { socket } from "@/socket";
+import { useEffect, useRef, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {mutate} from "swr";
+import { mutate } from "swr";
 import Error from "./Error";
 const MySpace = () => {
-  const {data, error, isLoading} = useSWR(`${BASE_URL}/users`, fetcher);
-  const {user, isAuthenticated} = useAuth0();
+  const { data, error, isLoading } = useSWR(`${BASE_URL}/users`, fetcher);
+  const { user, isAuthenticated } = useAuth0();
 
   const [checked, setChecked] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
-    socket.on("notify", ({label, username}) => {
+    socket.on("notify", ({ label, username }) => {
       toast(`${username} completed ${label}`, {
         position: "top-left",
         autoClose: 3000,
@@ -32,7 +32,7 @@ const MySpace = () => {
       });
       mutate(`${BASE_URL}/users`);
     });
-    return () => {};
+    return () => { };
   }, []);
 
   if (error) return <Error />;
@@ -59,7 +59,7 @@ const MySpace = () => {
                 <MySpaceTodosSectionSkeleton />
               ) : !user ? (
                 //add a gif component that shows user to add todos
-                <MySpaceTodosSectionSkeleton />
+                <EmptyList />
               ) : (
                 data.data &&
                 data?.data
@@ -69,18 +69,17 @@ const MySpace = () => {
                     }
                   })
                   .map((dbUser, index) => {
-                    return dbUser.todos?.length === 0  ? (
+                    return dbUser.todos?.length === 0 ? (
                       <EmptyList key={index} />
                     ) : (
                       dbUser?.todos?.map((todo, index) => (
                         <label
-                          className={`label cursor-pointer ${
-                            todo.status === "COMPLETED" ? "hidden" : "visible"
-                          }`}
+                          className={`label cursor-pointer ${todo.status === "COMPLETED" ? "hidden" : "visible"
+                            }`}
                           key={index}>
                           <div className={"flex items-center gap-8 flex-grow"}>
                             <input
-                              
+
                               type="checkbox"
                               checked={
                                 todo.status === "COMPLETED" ? true : false
@@ -98,23 +97,22 @@ const MySpace = () => {
                             </span>
                           </div>
                         </label>
-                        
+
                       ))
                     );
                   })
               )}
             </div>
           </div>
-          <div>
-            <h1 className="text-5xl font-bold">My Space</h1>
-            <p className="py-6">
+          <div className="hero-content flex-col md:items-center md:justify-end whitespace-wrap mx-auto">
+            <h1 className="text-5xl text-white font-bold text-center md:text-left">My Space</h1>
+            <p className="py-6  w-48  md:w-full m-6 md:m-auto text-white">
               Welcome to the scheduler app. Use the button below to plan out
               your day and see what your friends are up to!
             </p>
             <button
-              className={`btn ${user ? "btn-primary" : "btn-default"} ${
-                user ? "cursor-pointer" : "cursor-not-allowed"
-              }`}
+              className={`btn ${user ? "btn-primary" : "btn-default"} ${user ? "cursor-pointer" : "cursor-not-allowed"
+                }`}
               // disabled={user ? false : true}
               onClick={() => {
                 document

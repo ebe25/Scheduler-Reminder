@@ -66,26 +66,23 @@ const Home = ({socket}) => {
   }, [isLoading]);
 
   return (
-    <div>
+    <>
       <MySpace />
-      <div className="min-h-screen">
-        <div className="hero-content flex justify-center items-center ">
-          <div className="text-center lg:w-1/2 p-6">
-            {activeUsers && activeUsers.length > 0 ? (
-              <div className="mt-6">
-                <h1 className="text-3xl font-bold">Active Users</h1>
-                <ActiveUsersTab activeUsersData={activeUsers} />
-              </div>
-            ) : (
-              <>
-                <h1 className="text-3xl font-bold">Active Users</h1>
-                <NoActiveUsersFound />
-              </>
-            )}
-          </div>
+      {/* active users */}
+      <div className="flex justify-center items-center ">
+        <div className="text-center  p-6">
+          {activeUsers && activeUsers.length > 0 ? (
+            <div className="mt-6">
+              <ActiveUsersTab activeUsersData={activeUsers} />
+            </div>
+          ) : (
+            <>
+              <NoActiveUsersFound />
+            </>
+          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

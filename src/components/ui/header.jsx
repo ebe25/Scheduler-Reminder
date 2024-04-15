@@ -34,9 +34,8 @@ const Header = () => {
   return (
     <div className="navbar bg-neutral-500 shadow-xl">
       {/*<Button />*/}
-      <div className="gap-2">
-       
 
+      <div className="gap-2 ">
         <div className="dropdown dropdown-end ">
           <div
             tabIndex={0}
@@ -57,32 +56,54 @@ const Header = () => {
               <span className="indicator-item indicator-bottom badge badge-success" />
             )}
           </div>
-
         </div>
       </div>
-      <div className="flex flex-grow justify-center">
-        <a className="btn text-2xl btn-neutral text-white dark:text-sky-400">SCHEDULER APP</a>
+      <div className="flex w-full justify-center">
+        <a className="btn text-2xl btn-neutral text-white dark:text-sky-400">
+          SCHEDULER APP
+        </a>
       </div>
-      <div className="flex gap-5">
-      {isAuthenticated ? (
-        <button
-          className="btn btn-neutral"
-          onClick={() => {
-            socket.emit("logout_triggered", user);
-            logout({logoutParams: {returnTo: window.location.origin}});
-          }}>
-          Logout
-        </button>
-      ) : (
-        <button
-          className="btn btn-neutral text-white"
-          onClick={() => {
-            loginWithRedirect();
-          }}>
-          Login
-        </button>
-      )}
-    </div>
+      <div className="flex gap-5 ">
+        {isAuthenticated ? (
+          <button
+            className="btn btn-neutral"
+            onClick={() => {
+              socket.emit("logout_triggered", user);
+              logout({logoutParams: {returnTo: window.location.origin}});
+            }}>
+            Logout
+          </button>
+        ) : (
+          <button
+            className="btn btn-neutral text-white"
+            onClick={() => {
+              loginWithRedirect();
+            }}>
+            Login
+          </button>
+        )}
+      </div>
+      {/* <label className="btn btn-circle swap swap-rotate btn-accent xs:visible md:invisible flex-none">
+        <input type="checkbox" />
+
+        <svg
+          className="swap-off fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 512 512">
+          <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+        </svg>
+
+        <svg
+          className="swap-on fill-current"
+          xmlns="http://www.w3.org/2000/svg"
+          width="32"
+          height="32"
+          viewBox="0 0 512 512">
+          <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
+        </svg>
+      </label> */}
     </div>
   );
 };
