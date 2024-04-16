@@ -37,7 +37,7 @@ const ActiveUsersTab = ({ activeUsersData }) => {
   console.log("---", activeUsersExcepttheCurrentUser[0]?.name)
 
   return (
-    <Tabs className="flex flex-col md:flex-row items-start justify-start md:items-start md:justify-center gap-12 md:gap-24 h-1/2 md:h-full md:w-[1250px] " defaultValue={activeUsersExcepttheCurrentUser[0].name}>
+    <Tabs className="flex flex-col md:flex-row items-start justify-start md:items-start md:justify-center gap-12 md:gap-24 h-1/2 md:h-full md:w-[1250px] " defaultValue={activeUsersExcepttheCurrentUser[0]?.name}>
       {/* Active Users List */}
       <div className="md:w-1/2 lg:w-3/4 h-full  w-full">
         <Card className="shadow-xl bg-base-200 rounded-lg h-full border border-bg-base-200">
