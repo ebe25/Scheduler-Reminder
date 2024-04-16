@@ -104,14 +104,14 @@ const MySpace = () => {
               )}
             </div>
           </div>
-          <div className="hero-content flex-col md:items-center md:justify-end whitespace-wrap mx-auto">
+          <div className="hero-content flex-col items-start md:items-start md:justify-start whitespace-wrap ">
             <h1 className="text-5xl text-white font-bold text-center md:text-left">My Space</h1>
-            <p className="py-6  w-48  md:w-full m-6 md:m-auto text-white">
+            <p className="md:w-full text-white">
               Welcome to the scheduler app. Use the button below to plan out
               your day and see what your friends are up to!
             </p>
             <button
-              className={`btn ${user ? "btn-primary" : "btn-default"} ${user ? "cursor-pointer" : "cursor-not-allowed"
+              className={`btn ${user ? "btn-accent" : "btn-accent"} ${user ? "cursor-pointer" : "cursor-not-allowed"
                 }`}
               // disabled={user ? false : true}
               onClick={() => {

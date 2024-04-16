@@ -37,9 +37,9 @@ const ActiveUsersTab = ({ activeUsersData }) => {
   console.log("---", activeUsersExcepttheCurrentUser[0]?.name)
 
   return (
-    <Tabs className="flex flex-col md:flex-row items-start justify-start md:items-center md:justify-center gap-lg h-1/2 md:h-full md:w-[1250px] " defaultValue={activeUsersExcepttheCurrentUser[0].name}>
+    <Tabs className="flex flex-col md:flex-row items-start justify-start md:items-start md:justify-center gap-12 md:gap-24 h-1/2 md:h-full md:w-[1250px] " defaultValue={activeUsersExcepttheCurrentUser[0].name}>
       {/* Active Users List */}
-      <div className="md:w-1/2 lg:w-3/4 h-full min-h-screen w-full">
+      <div className="md:w-1/2 lg:w-3/4 h-full  w-full">
         <Card className="shadow-xl bg-base-200 rounded-lg h-full border border-bg-base-200">
           <h1 className="text-3xl font-bold text-white mb-2">Active Users</h1>
           <TabsList className="flex flex-col h-full">
@@ -62,7 +62,7 @@ const ActiveUsersTab = ({ activeUsersData }) => {
       {/* User Activity */}
       <div className="md:w-2/3 lg:w-3/4 w-full min-h-screen">
         <Card className="shadow-xl bg-base-200 rounded-lg ">
-          <h1 className="text-3xl font-bold text-white mb-2">User Activity</h1>
+          <h1 className="text-3xl font-bold text-white mb-2 ">Activity</h1>
           <TabsContent value={tabName} className="h-full">
             {selectedUserTodos?.length > 0 ? (
               <div className=" w-full h-full gap-4 shadow-2xl p-4">
