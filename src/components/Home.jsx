@@ -48,7 +48,7 @@ const Home = ({socket}) => {
         socket.emit("custom_dc", user);
       });
     };
-  }, [user,socket]);
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -71,7 +71,7 @@ const Home = ({socket}) => {
       {/* active users */}
       <div className="flex justify-center items-center ">
         <div className="text-center  p-6">
-          {activeUsers && activeUsers.length > 0 ? (
+          { activeUsers.length > 0 ? (
             <div className="mt-6">
               <ActiveUsersTab activeUsersData={activeUsers} />
             </div>

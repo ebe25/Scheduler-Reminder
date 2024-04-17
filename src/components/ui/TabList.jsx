@@ -34,7 +34,6 @@ const ActiveUsersTab = ({ activeUsersData }) => {
   // Fetch todos of the selected user
   const selectedUser = data?.data.find((user) => user.name === tabName);
   const selectedUserTodos = selectedUser?.todos;
-  console.log("---", activeUsersExcepttheCurrentUser[0]?.name)
 
   return (
     <Tabs className="flex flex-col md:flex-row items-start justify-start md:items-start md:justify-center gap-12 md:gap-24 h-1/2 md:h-full md:w-[1250px] " defaultValue={activeUsersExcepttheCurrentUser[0]?.name}>
