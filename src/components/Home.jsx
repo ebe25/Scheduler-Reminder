@@ -8,7 +8,7 @@ import NoActiveUsersFound from "./ui/NoActiveUsersFound";
 
 const Home = ({socket}) => {
   const {getAccessTokenSilently, isLoading, user, isAuthenticated} = useAuth0();
-  const [activeUsers, setActiveUsers] = useState(null);
+  const [activeUsers, setActiveUsers] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const Home = ({socket}) => {
         socket.emit("custom_dc", user);
       });
     };
-  }, [user]);
+  }, [user,socket]);
 
   useEffect(() => {
     if (user) {
